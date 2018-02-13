@@ -34,21 +34,33 @@ class NewVisitorTest(unittest.TestCase):
         
         # he hits enter and now "Buy bones" appears as to-do item
         inputbox.send_keys(Keys.ENTER)
-
+                
         table = self.browser.find_element_by_id('id_list_table')
         rows = table.find_elements_by_tag_name('tr')
-        self.assertTrue(
-            any(row.text == '1: Buy some chew bones' for row in rows),
-            "New to-do item did not appear in table"
+        
+        self.assertIn('1: Buy some chew bones', [row.text for row in rows])
+
+        # text box remains, Scooter enters "Chew bone and and sleep"
+        inputbox = self.browser.find_element_by_id('id_new_item')
+        inputbox.send_keys('Chew bone and sleep')
+        inputbox.send_keys(Keys.ENTER)
+
+        # page updates, both list items are shown
+        table = self.browser.find_element_by_id('id_list_table')
+        rows = table.find_elements_by_tag_name('tr')
+        self.assertIn(
+            '1: Buy some chew bones', [row.text for row in rows])
+        self.assertIn(
+            '2: Chew bone and sleep', [row.text for row in rows]
         )
 
-        # text box remains, Scooter enters "sleep and poop"
+        # scooter takes note of url to save his list
         self.fail('Finish the test!')
-
-        ## User stories ##
-        # page updates, both list items are shown
         
-        # scooter takes not of url to save his list
+        ## User stories ##
+        
+        
+        
         
         # Scooter derps
         
